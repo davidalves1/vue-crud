@@ -1,0 +1,5 @@
+{
+	"tarefas": [
+		{"id": 1, "data": "19/08/2016", "descricao": "Criar lista de tarefas utilizando Vue.js"}
+	]
+}

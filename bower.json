@@ -1,0 +1,27 @@
+{
+  "name": "vue-crud",
+  "description": "A project to test CRUD using the Vue.js",
+  "main": "",
+  "authors": [
+    "David Alves <alves.david@outlook.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "js",
+    "vuejs",
+    "crud"
+  ],
+  "homepage": "https://github.com/davidalves1/vue-crud",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "sweetalert2": "^4.1.7"
+  }
+}
