@@ -13,6 +13,17 @@
 	.m-top-20 {
 		margin-top: 20px;
 	}
+
+	.custom-table {
+		margin: 0 auto;
+		margin-top: 20px;
+		border: 2px solid rgba(100 100 100 0.5);
+	}
+
+	.custom-table th {
+		text-align: center;
+		background-color: #FEFEFE;
+	}
 </style>
 
 <template>
@@ -21,7 +32,19 @@
 		<h2>{{ title }}</h2>
 		<textarea id="txtDescription" class="form-control" v-model="txtDescription" placeholder="Descrição da tarefa...">
 		</textarea>
-		<button class="btn btn-primary m-top-20" @click="addTarefa">Nova tarefa</button>
+		<button class="btn btn-primary m-top-20" @click="addTarefa">Nova tarefa</button><br>
+		<table class="table custom-table m-top-20">
+			<thead>
+				<th>ID</th>
+				<th>Data</th>
+				<th>Descrição</th>
+			</thead>
+			<tr>
+				<td>1</td>
+				<td>22/08/2016</td>
+				<td>Teste</td>
+			</tr>
+		</table>
 	</div>
 </template>
 

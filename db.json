@@ -1,5 +1,7 @@
 {
-	"tarefas": [
-		{"id": 1, "data": "19/08/2016", "descricao": "Criar lista de tarefas utilizando Vue.js"}
+	"tasks": [
+		{"id": 1, "data": "19/08/2016", "description": "Criar lista de tarefas utilizando Vue.js"},
+		{"id": 2, "data": "22/08/2016", "description": "Criar lista de tarefas"},
+		{"id": 3, "data": "22/08/2016", "description": "Utilizando Vue.js"}
 	]
 }
