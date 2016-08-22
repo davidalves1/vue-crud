@@ -6,6 +6,6 @@ Vue.use(VueResource)
 
 new Vue({
   el: '#app',
-  compontents: { App },
+  components: { App },
   render: h => h(App)
 })

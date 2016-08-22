@@ -3,9 +3,10 @@
 </style>
 
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <Tarefas></Tarefas>
+  <div class="jumbotron">
+      
+      <Tarefas></Tarefas>
+
   </div>
 </template>
 
@@ -13,14 +14,14 @@
 import Tarefas from './Tarefas.vue'
 
 export default {
-  compontents: {
+  components: {
     Tarefas
   },
-  // data () {
-  //   return {
-  //     msg: 'Hello Vue!'
-  //   }
-  // }
+  data () {
+    return {
+      msg: 'Hello Vue!'
+    }
+  }
 }
 </script>
 
