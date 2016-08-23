@@ -7,7 +7,7 @@
     "dev": "webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "api": "json-server --watch db.json --port 3333",
-    // "dev-api": "npm-run-all --parallel dev api"
+    "dev-api": "npm-run-all --parallel dev api"
   },
   "dependencies": {
     "vue": "^2.0.0-rc.1",

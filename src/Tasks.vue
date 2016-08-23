@@ -54,7 +54,7 @@
 				<th>Descrição</th>
 				<th></th>
 			</thead>
-			<tr v-for="tasks as task">
+			<tr v-for="task in tasks">
 				<td width="5%">{{ task.id }}</td>
 				<td width="10%">{{ task.date }}</td>
 				<td width="70%">{{ task.description }}</td>
@@ -82,7 +82,7 @@
 		        itensPerPage: 10
 			}
 		},
-		ready: () =>this.loadTasks(),
+		ready: () => this.loadTasks(),
 		methods: {
 			showLoading() {
 				this.isLoading = true;
@@ -91,18 +91,24 @@
 				this.isLoading = false;
 			},
 			addTask() {
-				// swal('Funciona!', 'Sweet alert está funcionanado');
-				// let vm = this;
 
-				// vm.total++;
+				let vm = this;
 
-				// vm.tasks.push({
-				// 	id: vm.total,
-				// 	date: '23/08/2016',
-				// 	description: vm.description
-				// });
-				this.loadTasks();
-				
+				if (vm.description != '') {
+					vm.total++;
+
+					vm.tasks.push({
+						id: vm.total,
+						date: '23/08/2016',
+						description: vm.description
+					});
+
+					swal('Sucesso!', 'Nova tarefa adicionada.', 'success');
+
+					vm.description = '';
+				} else {
+					swal('Ops...', 'Preencha a descrição para adicionar uma tarefa', 'error');
+				}
 			},
 			loadTasks() {
 				let vm = this;
