@@ -42,9 +42,9 @@
 
 <template>
 	<div class="text-center" id="tasks">
-		<a href="" class="fixo" v-if="isLoading">Carregando</a>
+		<a href="" class="fixo" v-if="isLoading">Carregando...</a>
 		<h2>{{ title }}</h2>
-		<textarea id="txtDescription" class="form-control" v-model="txtDescription" placeholder="Descrição da tarefa...">
+		<textarea id="txtDescription" class="form-control" v-model="description" placeholder="Descrição da tarefa...">
 		</textarea>
 		<button class="btn btn-primary m-top-20" @click="addTask">Nova tarefa</button><br>
 		<table class="table custom-table m-top-20">
@@ -74,7 +74,7 @@
 				title: 'Lista de Tarefas',
 	        	isLoading: false,
 		        search: '',
-		        txtDescription: '',
+		        description: '',
 		        tasks: [],
 		        page: 1,
 		        total: 0,
@@ -82,6 +82,7 @@
 		        itensPerPage: 10
 			}
 		},
+		ready: () =>this.loadTasks(),
 		methods: {
 			showLoading() {
 				this.isLoading = true;
@@ -90,18 +91,29 @@
 				this.isLoading = false;
 			},
 			addTask() {
-				swal('Funciona!', 'Sweet alert está funcionanado');
+				// swal('Funciona!', 'Sweet alert está funcionanado');
+				// let vm = this;
+
+				// vm.total++;
+
+				// vm.tasks.push({
+				// 	id: vm.total,
+				// 	date: '23/08/2016',
+				// 	description: vm.description
+				// });
+				this.loadTasks();
+				
 			},
-			loadtasks() {
+			loadTasks() {
 				let vm = this;
 
 				vm.showLoading();
-
+				console.log('Testando');
 				let start = (vm.page * vm.itensPerPage) - vm.itensPerPage;
 
 				let end = vm.page * vm.itensPerPage;
 
-				vm.$http.get(`/tasks?_start=${start}&_end=${end}`)
+				vm.$http.get(`http://localhost:3333/tasks?_start=${start}&_end=${end}`)
 				.then(
 					response => {
 						vm.tasks = response.json();
@@ -109,7 +121,7 @@
 					},
 					error => {
 						console.log(error);
-				})
+					})
 				.finally(
 					() => {
 						vm.hideLoading();
