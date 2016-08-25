@@ -1,3 +1,107 @@
+<template>
+	<div class="text-center" id="tasks">
+		<a href="" class="fixo" v-if="isLoading">Carregando...</a>
+		<h2>{{ title }}</h2>
+		<input type="text" class="form-control" placeholder="Data" v-model="date" maxlength="8" v-mask="31/12/9999">
+		{{ date | formatDate}}
+		<textarea id="description" class="form-control m-top-20" v-model="description" placeholder="Descrição da tarefa...">
+		</textarea>
+		<button class="btn btn-primary m-top-20" @click="addTask">Nova tarefa</button><br>
+		<table class="table custom-table m-top-20">
+			<thead>
+				<th>ID</th>
+				<th>Data</th>
+				<th>Descrição</th>
+				<th></th>
+			</thead>
+			<tr v-for="task in tasks">
+				<td>{{ task.id }}</td>
+				<td>{{ task.date }}</td>
+				<td>{{ task.description }}</td>
+				<td><Options></Options></td>
+			</tr>
+		</table>
+	</div>
+</template>
+
+<script>
+	import Options from './Options.vue'
+
+	export default {
+		data() {
+			return {
+				title: 'Lista de Tarefas',
+	        	isLoading: false,
+		        search: '',
+		        date: '',
+		        description: '',
+		        tasks: [],
+		        page: 1,
+		        total: 0,
+		        selected: {},
+		        itensPerPage: 10
+			}
+		},
+		components: {
+			Options
+		},
+		ready: () => this.loadTasks(),
+		methods: {
+			showLoading() {
+				this.isLoading = true;
+			},
+			hideLoading() {
+				this.isLoading = false;
+			},
+			addTask() {
+
+				let vm = this;
+
+				if (vm.description != '') {
+					vm.total++;
+
+					vm.tasks.push({
+						id: vm.total,
+						date: '23/08/2016',
+						description: vm.description
+					});
+
+					// swal('Sucesso!', 'Nova tarefa adicionada.', 'success');
+
+					vm.description = '';
+					
+				} else {
+					swal('Ops...', 'Preencha a descrição para adicionar uma tarefa', 'error');
+				}
+			},
+			loadTasks() {
+				let vm = this;
+
+				vm.showLoading();
+				console.log('Testando');
+				let start = (vm.page * vm.itensPerPage) - vm.itensPerPage;
+
+				let end = vm.page * vm.itensPerPage;
+
+				vm.$http.get(`http://localhost:3333/tasks?_start=${start}&_end=${end}`)
+				.then(
+					response => {
+						vm.tasks = response.json();
+						vm.total = response.headers['X-Total-Count'];
+					},
+					error => {
+						console.log(error);
+					})
+				.finally(
+					() => {
+						vm.hideLoading();
+					}
+				)
+			}
+		}
+	}
+</script>
+
 <style>
 	a {
 		text-decoration: none !important;
@@ -39,101 +143,3 @@
 	}
 
 </style>
-
-<template>
-	<div class="text-center" id="tasks">
-		<a href="" class="fixo" v-if="isLoading">Carregando...</a>
-		<h2>{{ title }}</h2>
-		<textarea id="txtDescription" class="form-control" v-model="description" placeholder="Descrição da tarefa...">
-		</textarea>
-		<button class="btn btn-primary m-top-20" @click="addTask">Nova tarefa</button><br>
-		<table class="table custom-table m-top-20">
-			<thead>
-				<th>ID</th>
-				<th>Data</th>
-				<th>Descrição</th>
-				<th></th>
-			</thead>
-			<tr v-for="task in tasks">
-				<td width="5%">{{ task.id }}</td>
-				<td width="10%">{{ task.date }}</td>
-				<td width="70%">{{ task.description }}</td>
-				<td width="15%">
-					<a href="" class="glyphicon glyphicon-pencil m-right-5"></a>
-					<a href="" class="glyphicon glyphicon-trash"></a>
-				</td>
-			</tr>
-		</table>
-	</div>
-</template>
-
-<script>
-	export default {
-		data() {
-			return {
-				title: 'Lista de Tarefas',
-	        	isLoading: false,
-		        search: '',
-		        description: '',
-		        tasks: [],
-		        page: 1,
-		        total: 0,
-		        selected: {},
-		        itensPerPage: 10
-			}
-		},
-		ready: () => this.loadTasks(),
-		methods: {
-			showLoading() {
-				this.isLoading = true;
-			},
-			hideLoading() {
-				this.isLoading = false;
-			},
-			addTask() {
-
-				let vm = this;
-
-				if (vm.description != '') {
-					vm.total++;
-
-					vm.tasks.push({
-						id: vm.total,
-						date: '23/08/2016',
-						description: vm.description
-					});
-
-					swal('Sucesso!', 'Nova tarefa adicionada.', 'success');
-
-					vm.description = '';
-				} else {
-					swal('Ops...', 'Preencha a descrição para adicionar uma tarefa', 'error');
-				}
-			},
-			loadTasks() {
-				let vm = this;
-
-				vm.showLoading();
-				console.log('Testando');
-				let start = (vm.page * vm.itensPerPage) - vm.itensPerPage;
-
-				let end = vm.page * vm.itensPerPage;
-
-				vm.$http.get(`http://localhost:3333/tasks?_start=${start}&_end=${end}`)
-				.then(
-					response => {
-						vm.tasks = response.json();
-						vm.total = response.headers['X-Total-Count'];
-					},
-					error => {
-						console.log(error);
-					})
-				.finally(
-					() => {
-						vm.hideLoading();
-					}
-				)
-			}
-		}
-	}
-</script> 

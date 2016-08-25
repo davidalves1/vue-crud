@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Tasks from './Tasks.vue'
+import Tasks from './components/Tasks.vue'
 
 export default {
   components: {
