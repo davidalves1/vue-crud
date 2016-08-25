@@ -1,9 +1,8 @@
 <template>
-	<div class="text-center" id="tasks">
+	<div id="tasks">
 		<a href="" class="fixo" v-if="isLoading">Carregando...</a>
 		<h2>{{ title }}</h2>
-		<input type="text" class="form-control" placeholder="Data" v-model="date" maxlength="8" v-mask="31/12/9999">
-		{{ date | formatDate}}
+		<Date></Date>
 		<textarea id="description" class="form-control m-top-20" v-model="description" placeholder="Descrição da tarefa...">
 		</textarea>
 		<button class="btn btn-primary m-top-20" @click="addTask">Nova tarefa</button><br>
@@ -25,9 +24,14 @@
 </template>
 
 <script>
+	import Date from './Date.vue'
 	import Options from './Options.vue'
 
 	export default {
+		components: {
+			Options,
+			Date
+		},
 		data() {
 			return {
 				title: 'Lista de Tarefas',
@@ -42,10 +46,7 @@
 		        itensPerPage: 10
 			}
 		},
-		components: {
-			Options
-		},
-		ready: () => this.loadTasks(),
+		mounted() { this.loadTasks() },
 		methods: {
 			showLoading() {
 				this.isLoading = true;
@@ -111,6 +112,12 @@
 		text-align: center;
 	}
 
+	button {
+		position: relative;
+		left: 50%;
+		margin-left: -70px;
+	}
+
 	.m-right-5 {
 		margin-right: 5px;
 	}
@@ -140,6 +147,7 @@
 
 	.custom-table tr {
 		height: 2em;
+		text-align: center;
 	}
 
 </style>
