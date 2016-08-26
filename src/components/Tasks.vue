@@ -84,7 +84,7 @@
 
 				let end = vm.page * vm.itensPerPage;
 
-				vm.$http.get(`http://localhost:3333/tasks?_start=${start}&_end=${end}`)
+				vm.$http.get(`http://localhost:3333/api/tasks?_start=${start}&_end=${end}`)
 				.then(
 					response => {
 						vm.tasks = response.json();
