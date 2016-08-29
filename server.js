@@ -1,10 +1,10 @@
 // BASE SETUP
 // =============================================================================
 
-import express from 'express'
-import bodyParser from 'body-parser'
-import mongoose from 'mongoose'
-import tasks from './server/models/Tasks.js'
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const Task = require('./server/models/Tasks');
 
 const app = express();
 
@@ -36,12 +36,12 @@ router.get('/', function(req, res) {
 // more routes for our API will happen here
 
 router.route('/tasks')
-
     // create a task (accessed at POST http://localhost:8080/api/tasks)
     .post(function(req, res) {
         
         var task = new Task();      // create a new instance of the task model
-        task.name = req.body.name;  // set the tasks name (comes from the request)
+        task.date = req.body.date;  // set the tasks date (comes from the request)
+        task.description = req.body.description;  // set the tasks descríption (comes from the request)
 
         // save the task and check for errors
         task.save(function(err) {
@@ -51,7 +51,16 @@ router.route('/tasks')
             res.json({ message: 'Task created!' });
         });
         
-    });
+    })
+    // get all the bears (accessed at GET http://localhost:8080/api/bears)
+    .get(function(req, res) {
+        Task.find(function(err, tasks) {
+            if (err)
+                res.send(err);
+
+            res.json(tasks);
+        });
+    });;
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api

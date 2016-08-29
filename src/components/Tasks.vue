@@ -2,7 +2,7 @@
 	<div id="tasks">
 		<a href="" class="fixo" v-if="isLoading">Carregando...</a>
 		<h2>{{ title }}</h2>
-		<Date></Date>
+		<input type="date" class="form-control" placeholder="dd/mm/aaaa" v-model="date" maxlength="8">
 		<textarea id="description" class="form-control m-top-20" v-model="description" placeholder="Descrição da tarefa...">
 		</textarea>
 		<button class="btn btn-primary m-top-20" @click="addTask">Nova tarefa</button><br>
@@ -47,6 +47,11 @@
 			}
 		},
 		mounted() { this.loadTasks() },
+		filters: {
+			formatDate(date) {
+			  return date.replace(/(\d{2})(\d{2})(\d{4})/g, '\$1/\$2/\$3');
+			}
+		},
 		methods: {
 			showLoading() {
 				this.isLoading = true;
