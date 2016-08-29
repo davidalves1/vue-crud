@@ -23,20 +23,21 @@ const port = process.env.PORT || 3333;
 const router = express.Router();              // get an instance of the express Router
 
 router.use((req, res, next) => {
+	// Resolve the cross-origin problem
+	res.header("Access-Control-Allow-Origin", "*");
+  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	console.log('Something else happening.');
 
 	next();
 });
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });   
 });
 
-// more routes for our API will happen here
-
+// Routes from the API
 router.route('/tasks')
-    // create a task (accessed at POST http://localhost:8080/api/tasks)
+    // create a task
     .post(function(req, res) {
         
         var task = new Task();      // create a new instance of the task model
@@ -48,11 +49,11 @@ router.route('/tasks')
             if (err)
                 res.send(err);
 
-            res.json({ message: 'Task created!' });
+            res.json({ message: 'Tarefa registrada' });
         });
         
     })
-    // get all the bears (accessed at GET http://localhost:8080/api/bears)
+    // get all the tasks
     .get(function(req, res) {
         Task.find(function(err, tasks) {
             if (err)

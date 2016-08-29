@@ -24,13 +24,11 @@
 </template>
 
 <script>
-	import Date from './Date.vue'
 	import Options from './Options.vue'
 
 	export default {
 		components: {
-			Options,
-			Date
+			Options
 		},
 		data() {
 			return {
@@ -64,17 +62,8 @@
 				let vm = this;
 
 				if (vm.description != '') {
-					vm.total++;
 
-					vm.tasks.push({
-						id: vm.total,
-						date: '23/08/2016',
-						description: vm.description
-					});
-
-					// swal('Sucesso!', 'Nova tarefa adicionada.', 'success');
-
-					vm.description = '';
+					// Create
 					
 				} else {
 					swal('Ops...', 'Preencha a descrição para adicionar uma tarefa', 'error');
@@ -92,7 +81,9 @@
 				vm.$http.get(`http://localhost:3333/api/tasks?_start=${start}&_end=${end}`)
 				.then(
 					response => {
+						vm.id = start;
 						vm.tasks = response.json();
+						console.log(response.json());
 						vm.total = response.headers['X-Total-Count'];
 					},
 					error => {

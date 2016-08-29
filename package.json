@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "api": "json-server --watch db.json --port 3333",
+    "api": "node server.js",
     "dev-api": "npm-run-all --parallel dev api"
   },
   "dependencies": {
