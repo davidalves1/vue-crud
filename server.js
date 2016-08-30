@@ -1,10 +1,10 @@
 // BASE SETUP
 // =============================================================================
 
-import express from 'express'
-import bodyParser from 'body-parser'
-import mongoose from 'mongoose'
-import tasks from './server/models/Tasks.js'
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const tasks = require('./server/models/Tasks.js');
 
 const app = express();
 
@@ -40,7 +40,7 @@ router.route('/tasks')
     // create a task (accessed at POST http://localhost:8080/api/tasks)
     .post(function(req, res) {
         
-        var task = new Task();      // create a new instance of the task model
+        let task = new Task();      // create a new instance of the task model
         task.name = req.body.name;  // set the tasks name (comes from the request)
 
         // save the task and check for errors

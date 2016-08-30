@@ -1,7 +1,3 @@
-<style>
-
-</style>
-
 <template>
   <div class="jumbotron">
       <Tasks></Tasks>
@@ -17,3 +13,7 @@ export default {
   }
 }
 </script>
+
+<style>
+
+</style>
