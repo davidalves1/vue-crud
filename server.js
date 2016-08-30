@@ -4,7 +4,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const tasks = require('./server/models/Tasks.js');
+const Task = require('./server/models/Tasks');
 
 const app = express();
 
@@ -23,35 +23,45 @@ const port = process.env.PORT || 3333;
 const router = express.Router();              // get an instance of the express Router
 
 router.use((req, res, next) => {
+	// Resolve the cross-origin problem
+	res.header("Access-Control-Allow-Origin", "*");
+  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	console.log('Something else happening.');
 
 	next();
 });
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });   
 });
 
-// more routes for our API will happen here
-
+// Routes from the API
 router.route('/tasks')
-
-    // create a task (accessed at POST http://localhost:8080/api/tasks)
+    // create a task
     .post(function(req, res) {
         
         let task = new Task();      // create a new instance of the task model
-        task.name = req.body.name;  // set the tasks name (comes from the request)
+        task.date = req.body.date;  // set the tasks date (comes from the request)
+        task.description = req.body.description;  // set the tasks descríption (comes from the request)
 
         // save the task and check for errors
         task.save(function(err) {
             if (err)
                 res.send(err);
 
-            res.json({ message: 'Task created!' });
+            res.json({ message: 'Tarefa registrada' });
         });
         
-    });
+    })
+    // get all the tasks
+    .get(function(req, res) {
+        Task.find(function(err, tasks) {
+            if (err)
+                res.send(err);
+
+            res.json(tasks);
+        });
+    });;
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api

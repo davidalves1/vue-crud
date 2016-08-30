@@ -2,7 +2,7 @@
 	<div id="tasks">
 		<a href="" class="fixo" v-if="isLoading">Carregando...</a>
 		<h2>{{ title }}</h2>
-		<Date></Date>
+		<input type="date" class="form-control" placeholder="dd/mm/aaaa" v-model="date" maxlength="8">
 		<textarea id="description" class="form-control m-top-20" v-model="description" placeholder="Descrição da tarefa...">
 		</textarea>
 		<button class="btn btn-primary m-top-20" @click="addTask">Nova tarefa</button><br>
@@ -24,13 +24,11 @@
 </template>
 
 <script>
-	import Date from './Date.vue'
 	import Options from './Options.vue'
 
 	export default {
 		components: {
-			Options,
-			Date
+			Options
 		},
 		data() {
 			return {
@@ -47,6 +45,11 @@
 			}
 		},
 		mounted() { this.loadTasks() },
+		filters: {
+			formatDate(date) {
+			  return date.replace(/(\d{2})(\d{2})(\d{4})/g, '\$1/\$2/\$3');
+			}
+		},
 		methods: {
 			showLoading() {
 				this.isLoading = true;
@@ -59,17 +62,8 @@
 				let vm = this;
 
 				if (vm.description != '') {
-					vm.total++;
 
-					vm.tasks.push({
-						id: vm.total,
-						date: '23/08/2016',
-						description: vm.description
-					});
-
-					// swal('Sucesso!', 'Nova tarefa adicionada.', 'success');
-
-					vm.description = '';
+					// Create
 					
 				} else {
 					swal('Ops...', 'Preencha a descrição para adicionar uma tarefa', 'error');
@@ -87,7 +81,9 @@
 				vm.$http.get(`http://localhost:3333/api/tasks?_start=${start}&_end=${end}`)
 				.then(
 					response => {
+						vm.id = start;
 						vm.tasks = response.json();
+						console.log(response.json());
 						vm.total = response.headers['X-Total-Count'];
 					},
 					error => {
