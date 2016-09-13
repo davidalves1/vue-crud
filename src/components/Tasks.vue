@@ -2,20 +2,18 @@
 	<div id="tasks">
 		<a href="" class="fixo" v-if="isLoading">Carregando...</a>
 		<h2>{{ title }}</h2>
-		<input type="date" class="form-control" placeholder="dd/mm/aaaa" v-model="date" maxlength="8">
+		<input type="date" class="form-control" id="date" placeholder="dd/mm/aaaa" v-model="date" maxlength="8">
 		<textarea id="description" class="form-control m-top-20" v-model="description" placeholder="Descrição da tarefa...">
 		</textarea>
 		<button class="btn btn-primary m-top-20" @click="addTask">Nova tarefa</button><br>
 		<table class="table custom-table m-top-20">
 			<thead>
-				<th>ID</th>
 				<th>Data</th>
 				<th>Descrição</th>
 				<th></th>
 			</thead>
 			<tr v-for="task in tasks">
-				<td>{{ task.id }}</td>
-				<td>{{ task.date }}</td>
+				<td>{{ task.date | formatDate }}</td>
 				<td>{{ task.description }}</td>
 				<td><Options></Options></td>
 			</tr>
@@ -47,7 +45,7 @@
 		mounted() { this.loadTasks() },
 		filters: {
 			formatDate(date) {
-			  return date.replace(/(\d{2})(\d{2})(\d{4})/g, '\$1/\$2/\$3');
+			  return date.split('T')[0].split('-').reverse().join('/');
 			}
 		},
 		methods: {
@@ -73,7 +71,7 @@
 				let vm = this;
 
 				vm.showLoading();
-				console.log('Testando');
+
 				let start = (vm.page * vm.itensPerPage) - vm.itensPerPage;
 
 				let end = vm.page * vm.itensPerPage;
@@ -83,7 +81,6 @@
 					response => {
 						vm.id = start;
 						vm.tasks = response.json();
-						console.log(response.json());
 						vm.total = response.headers['X-Total-Count'];
 					},
 					error => {
@@ -94,12 +91,19 @@
 						vm.hideLoading();
 					}
 				)
+			},
+			newDate() {
+				let vm = this;
+
+				document.getElementById('date').addEventListener('keypress', (value) => {
+					return value.replace(/^\d{2}\d{2}\d{4}$/g, '$1/$2/$3');
+				});
 			}
 		}
 	}
 </script>
 
-<style>
+<style scoped>
 	a {
 		text-decoration: none !important;
 	}
