@@ -1,6 +1,6 @@
 <template>
 	<div id="options">
-		<a href="" class="glyphicon glyphicon-pencil m-right-5"></a>
+		<a href="" class="glyphicon glyphicon-pencil m-right-5" @click="editTask"></a>
 		<a href="" class="glyphicon glyphicon-trash"></a>
 	</div>
 </template>
@@ -14,6 +14,13 @@ export default {
     return {
 
     };
+  },
+  methods: {
+  	editTask() {
+		let vm = this;
+
+		console.log('Olá!');
+	},
   }
 };
 </script>

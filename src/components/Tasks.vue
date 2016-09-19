@@ -15,7 +15,10 @@
 			<tr v-for="task in tasks">
 				<td>{{ task.date | formatDate }}</td>
 				<td>{{ task.description }}</td>
-				<td><Options></Options></td>
+				<td>
+					<a href="" class="glyphicon glyphicon-pencil m-right-5" @click.prevent="editTask(task)"></a>
+					<a href="" class="glyphicon glyphicon-trash" @click.prevent="deleteTask(task)"></a>
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -43,8 +46,7 @@
 			}
 		},
 		mounted() { 
-			let vm = this;
-			vm.loadTasks();
+			this.loadTasks();
 		},
 		filters: {
 			formatDate(date) {
@@ -63,7 +65,6 @@
 
 				if (vm.description !== '' && vm.date.length == 10) {
 
-
 					let date = vm.date.split('/');
 
 					let data = {
@@ -74,17 +75,40 @@
 					vm.$http.post(`http://localhost:3333/api/tasks`, data)
 						.then( 
 							response => {
-								console.log(response)
+								swal('Sucesso', 'Sua tarefa foi inserida!', 'success');
+								vm.tarefa = vm.description = '';
 							}, error => {
 								console.log(error)
 							}
 						).finally(
+							() => {
 								vm.loadTasks()
-							);
+							}		
+						);
 					
 				} else {
 					swal('Ops...', 'Todos os campos devem ser preenchidos corretamente para adicionar uma tarefa.', 'error');
 				}
+			},
+		  	editTask(task) {
+				let vm = this;
+
+				console.log(task.id);
+			},
+			deleteTask(task) {
+				let vm = this;
+
+				vm.$http.delete(`http://localhost:3333/api/tasks/${task._id}`)
+					.then(
+						response => {
+							swal('Sucesso', 'Sua tarefa foi excluída.', 'success');
+					}, error => {
+						console.log(error);
+					}).finally(
+						() => {
+							vm.loadTasks()
+						}		
+					);
 			},
 			loadTasks() {
 				let vm = this;
@@ -115,7 +139,7 @@
 				let vm = this;
 
 				if (vm.date.length == 8)
-					document.getElementById('date').value = vm.date = vm.date.replace(/^(\d{2})(\d{2})(\d{4})$/g, '$1/$2/$3');
+					vm.date = vm.date.replace(/^(\d{2})(\d{2})(\d{4})$/g, '$1/$2/$3');
 			}
 		}
 	}
