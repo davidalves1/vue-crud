@@ -2,8 +2,8 @@
 	<div id="tasks">
 		<a href="" class="fixo" v-if="isLoading">Carregando...</a>
 		<h2>{{ title }}</h2>
-		<input type="date" class="form-control" id="date" placeholder="dd/mm/aaaa" v-model="date" maxlength="8">
-		<textarea id="description" class="form-control m-top-20" v-model="description" placeholder="Descrição da tarefa...">
+		<input type="date" class="form-control" id="date" placeholder="dd/mm/aaaa" maxlength="10" v-model="date" @keypress="newDate">
+		<textarea id="description" class="form-control m-top-20" placeholder="Descrição da tarefa..." v-model="description">
 		</textarea>
 		<button class="btn btn-primary m-top-20" @click="addTask">Nova tarefa</button><br>
 		<table class="table custom-table m-top-20">
@@ -42,7 +42,10 @@
 		        itensPerPage: 10
 			}
 		},
-		mounted() { this.loadTasks() },
+		mounted() { 
+			let vm = this;
+			vm.loadTasks();
+		},
 		filters: {
 			formatDate(date) {
 			  return date.split('T')[0].split('-').reverse().join('/');
@@ -56,15 +59,31 @@
 				this.isLoading = false;
 			},
 			addTask() {
-
 				let vm = this;
 
-				if (vm.description != '') {
+				if (vm.description !== '' && vm.date.length == 10) {
 
-					// Create
+
+					let date = vm.date.split('/');
+
+					let data = {
+						date: new Date(date[2], date[1] - 1, date[0], 0, 0, 0),
+						description: vm.description
+					};
+
+					vm.$http.post(`http://localhost:3333/api/tasks`, data)
+						.then( 
+							response => {
+								console.log(response)
+							}, error => {
+								console.log(error)
+							}
+						).finally(
+								vm.loadTasks()
+							);
 					
 				} else {
-					swal('Ops...', 'Preencha a descrição para adicionar uma tarefa', 'error');
+					swal('Ops...', 'Todos os campos devem ser preenchidos corretamente para adicionar uma tarefa.', 'error');
 				}
 			},
 			loadTasks() {
@@ -95,9 +114,8 @@
 			newDate() {
 				let vm = this;
 
-				document.getElementById('date').addEventListener('keypress', (value) => {
-					return value.replace(/^\d{2}\d{2}\d{4}$/g, '$1/$2/$3');
-				});
+				if (vm.date.length == 8)
+					document.getElementById('date').value = vm.date = vm.date.replace(/^(\d{2})(\d{2})(\d{4})$/g, '$1/$2/$3');
 			}
 		}
 	}
