@@ -8,7 +8,7 @@ const Task = require('./server/models/Tasks');
 
 const app = express();
 
-mongoose.connect('mongodb://userdb:123+456@ds017256.mlab.com:17256/tasks-vue');
+mongoose.connect('mongodb://user:123+456@ds035806.mlab.com:35806/vue-tasks-example');
 
 // Configure app to use bodyParser()
 // this will let us get the data from a POST
