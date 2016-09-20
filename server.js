@@ -10,7 +10,7 @@ const app = express();
 
 mongoose.connect('mongodb://userdb:123+456@ds017256.mlab.com:17256/tasks-vue');
 
-// configure app to use bodyParser()
+// Configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -20,19 +20,21 @@ const port = process.env.PORT || 3333;
 
 // ROUTES FOR OUR API
 // =============================================================================
-const router = express.Router();              // get an instance of the express Router
+// get an instance of the express Router
+const router = express.Router();              
 
 router.use((req, res, next) => {
 	// Resolve the cross-origin problem
-	res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-	console.log('Something else happening.');
+	console.log(`method: ${req.method} | url: ${req.url}`);
 
 	next();
 });
 
 router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
+    res.json({ message: 'Bem vindo a API de Tarefas!' });   
 });
 
 // Routes from the API
@@ -61,7 +63,33 @@ router.route('/tasks')
 
             res.json(tasks);
         });
-    });;
+    });
+
+router.route('/tasks/:task_id')
+    // get one task
+    .get(function(req, res){
+        Task.findById(req.params.task_id, function(err, task) {
+            if (err)
+                res.send(err);
+
+            res.json(task);
+        });
+    })
+    // update a task
+    .put(function(req, res) {
+        console.log('update');
+    })
+    // delete a task
+    .delete(function(req, res) {
+        Task.remove({
+            _id: req.params.task_id
+        }, function(err, task) {
+            if (err)
+                res.send(err);
+
+            res.json({deleted: true, status: 200})
+        })
+    });
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api

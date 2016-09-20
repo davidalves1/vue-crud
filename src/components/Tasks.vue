@@ -76,7 +76,7 @@
 						.then( 
 							response => {
 								swal('Sucesso', 'Sua tarefa foi inserida!', 'success');
-								vm.tarefa = vm.description = '';
+								vm.date = vm.description = '';
 							}, error => {
 								console.log(error)
 							}
@@ -93,18 +93,33 @@
 		  	editTask(task) {
 				let vm = this;
 
-				console.log(task.id);
+				console.log(task._id);
 			},
+			// getTask(task) {
+			// 	let vm = this;
+
+			// 	vm.$http.get(`http://localhost:3333/api/tasks/${task._id}`)
+			// 		.then(
+			// 			response => {
+			// 				console.log(response);
+			// 			},
+			// 			error => {
+			// 				console.log(error)
+			// 			}
+			// 		);
+			// }, 
 			deleteTask(task) {
 				let vm = this;
 
 				vm.$http.delete(`http://localhost:3333/api/tasks/${task._id}`)
 					.then(
 						response => {
-							swal('Sucesso', 'Sua tarefa foi excluída.', 'success');
-					}, error => {
-						console.log(error);
-					}).finally(
+								swal('Sucesso', 'Sua tarefa foi excluída.', 'success');
+						}, 
+						error => {
+							console.log(error);
+						})
+					.finally(
 						() => {
 							vm.loadTasks()
 						}		
