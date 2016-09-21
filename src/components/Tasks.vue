@@ -25,8 +25,6 @@
 </template>
 
 <script>
-	import Options from './Options.vue'
-
 	export default {
 		components: {
 			Options
@@ -93,7 +91,7 @@
 		  	editTask(task) {
 				let vm = this;
 
-				console.log(task._id);
+				
 			},
 			// getTask(task) {
 			// 	let vm = this;

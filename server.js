@@ -77,7 +77,22 @@ router.route('/tasks/:task_id')
     })
     // update a task
     .put(function(req, res) {
-        console.log('update');
+        Task.findById(req.params.task_id, function(err, task) {
+            if (err)
+                res.send(err);
+
+            task.date = req.body.date;
+            task.description = req.body.description;
+
+            task.save(function(err) {
+
+                if (err)
+                    res.send(err);
+
+                res.json({message: 'Tarefa atualizada'});
+
+            });
+        });
     })
     // delete a task
     .delete(function(req, res) {
