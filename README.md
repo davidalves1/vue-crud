@@ -1,6 +1,6 @@
 # vue-crud
 
-> A project to test CRUD using the Vue.js
+> A project to create a Vue.js ToDo with MongoDB
 
 ## Build Setup
 
@@ -17,6 +17,7 @@ npm run api
 # build for production with minification
 npm run build
 ```
+
 ### Contributions
 
 Create a [issue](https://github.com/davidalves1/clima-app/issues/new) or send a **pull request**!
