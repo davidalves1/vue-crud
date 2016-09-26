@@ -62,7 +62,8 @@ router.route('/tasks')
                 res.send(err);
 
             res.json(tasks);
-        });
+        })
+        .sort('-date description');
     });
 
 router.route('/tasks/:task_id')

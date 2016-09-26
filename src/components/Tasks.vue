@@ -26,9 +26,6 @@
 
 <script>
 	export default {
-		components: {
-			Options
-		},
 		data() {
 			return {
 				title: 'Lista de Tarefas',
